@@ -13,6 +13,11 @@ from sklearn.model_selection import train_test_split
 
 from sklearn.preprocessing import StandardScaler
 
+from evaluation import evaluate_model
+
+from sklearn.linear_model import LogisticRegression
+
+from evaluation import evaluate_model
 
 # cargar datasets
 train_df = pd.read_csv("train.csv")
@@ -193,13 +198,19 @@ y_pred = model.predict(X_val)
 
 # metricas
 
-accuracy = accuracy_score(y_val, y_pred)
+evaluate_model(
+    y_val,
+    y_pred,
+    model_name="Logistic Regression Baseline"
+)
 
-print("\nAccuracy:")
-print(accuracy)
+#accuracy = accuracy_score(y_val, y_pred)
 
-print("\nClassification Report:\n")
-print(classification_report(y_val, y_pred))
+#print("\nAccuracy:")
+#print(accuracy)
 
-print("\nConfusion Matrix:\n")
-print(confusion_matrix(y_val, y_pred))
+#print("\nClassification Report:\n")
+#print(classification_report(y_val, y_pred))
+
+#print("\nConfusion Matrix:\n")
+#print(confusion_matrix(y_val, y_pred))
