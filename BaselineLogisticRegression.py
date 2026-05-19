@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
-from evaluation import evaluate_model
+from src.evaluation import evaluate_model
 
 # cargar datasets
 train_df = pd.read_csv("train.csv")
