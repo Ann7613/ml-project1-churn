@@ -60,7 +60,7 @@ print(train_df.dtypes)
 print("\nValores nulos despues conversion:\n")
 print(train_df.isnull().sum())
 
-#se elimina el custumerID porque no sirve
+#se elimina el custumerID porque no lo necesitamos...
 
 train_df = train_df.drop("customerID", axis=1)
 test_df = test_df.drop("customerID", axis=1)
