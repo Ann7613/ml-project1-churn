@@ -1,4 +1,5 @@
 import pandas as pd
+import seaborn as sns
 import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import OneHotEncoder
@@ -12,6 +13,16 @@ from src.threshold import evaluate_thresholds
 # cargar datasets
 train_df = pd.read_csv("train.csv")
 test_df = pd.read_csv("test.csv")
+
+# EDA 1: distribución de la variable objetivo Churn
+plt.figure(figsize=(5, 4))
+sns.countplot(data=train_df, x="Churn")
+plt.title("Distribución de Churn")
+plt.xlabel("Churn")
+plt.ylabel("Cantidad")
+plt.tight_layout()
+plt.savefig("figures/churn_distribution.png", dpi=300)
+plt.show()
 
 # mostrar primeras filas
 print("TRAIN:")
@@ -43,6 +54,21 @@ test_df["TotalCharges"] = pd.to_numeric(
     test_df["TotalCharges"],
     errors="coerce"
 )
+
+# EDA 2: distribución de MonthlyCharges según Churn
+plt.figure(figsize=(7, 5))
+sns.histplot(
+    data=train_df,
+    x="MonthlyCharges",
+    hue="Churn",
+    kde=True
+)
+plt.title("MonthlyCharges según Churn")
+plt.xlabel("Monthly Charges")
+plt.ylabel("Frecuencia")
+plt.tight_layout()
+plt.savefig("figures/monthlycharges_churn.png", dpi=300)
+plt.show()
 
 print("\nTipos luego de conversion:\n")
 print(train_df.dtypes)
@@ -267,4 +293,5 @@ plt.title("Metricas segun Threshold")
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
+plt.savefig("figures/threshold_metrics.png", dpi=300)
 plt.show()

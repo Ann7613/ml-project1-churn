@@ -36,6 +36,7 @@ def evaluate_model(y_true, y_pred, model_name="Modelo"):
     plt.xlabel("Predicción")
     plt.ylabel("Valor Real")
     plt.tight_layout()
+    plt.savefig(f"figures/confusion_matrix_{model_name.replace(' ', '_')}.png", dpi=300)
     plt.show()
 
     return {
