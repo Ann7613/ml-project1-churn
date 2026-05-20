@@ -1,3 +1,6 @@
+import os
+import re
+
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -11,7 +14,13 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 
-def evaluate_model(y_true, y_pred, model_name="Modelo"):
+def _safe_filename(name):
+    name = name.replace(" ", "_")
+    name = re.sub(r"[^a-zA-Z0-9_\\.]", "", name)
+    return name
+
+
+def evaluate_model(y_true, y_pred, model_name="Modelo", save_fig=True):
 
     print(f"\n===== {model_name} =====")
 
@@ -36,7 +45,12 @@ def evaluate_model(y_true, y_pred, model_name="Modelo"):
     plt.xlabel("Predicción")
     plt.ylabel("Valor Real")
     plt.tight_layout()
-    plt.savefig(f"figures/confusion_matrix_{model_name.replace(' ', '_')}.png", dpi=300)
+
+    if save_fig:
+        os.makedirs("figures", exist_ok=True)
+        filename = _safe_filename(model_name)
+        plt.savefig(f"figures/confusion_matrix_{filename}.png", dpi=300)
+
     plt.show()
 
     return {

@@ -16,6 +16,13 @@ from sklearn.model_selection import GridSearchCV, StratifiedKFold
 
 import pandas as pd
 
+from evaluation import evaluate_model
+
+from threshold import (
+    evaluate_thresholds,
+    get_best_threshold,
+    plot_threshold_metrics
+)
 
 # cargar datos
 X_train, X_val, y_train, y_val, X_test = (
@@ -267,3 +274,116 @@ comparison_df = pd.DataFrame({
 
 print("\nCOMPARISON TABLE\n")
 print(comparison_df)
+
+# =========================
+# EVALUATION WITH HEATMAPS
+# =========================
+
+print("\n========================")
+print("EVALUATION WITH HEATMAPS")
+print("========================")
+
+evaluate_model(
+    y_val,
+    y_pred_log,
+    model_name="Logistic Regression"
+)
+
+evaluate_model(
+    y_val,
+    y_pred_rf,
+    model_name="Random Forest"
+)
+
+evaluate_model(
+    y_val,
+    y_pred_log_tuned,
+    model_name="Tuned Logistic Regression"
+)
+
+evaluate_model(
+    y_val,
+    y_pred_rf_tuned,
+    model_name="Tuned Random Forest"
+)
+
+
+# =========================
+# THRESHOLD TUNING
+# =========================
+
+print("\n========================")
+print("THRESHOLD TUNING")
+print("========================")
+
+
+# Logistic Regression tuned
+
+y_prob_log_tuned = log_model.predict_proba(X_val)[:, 1]
+
+threshold_results_log = evaluate_thresholds(
+    y_val,
+    y_prob_log_tuned
+)
+
+print("\nThreshold tuning - Tuned Logistic Regression\n")
+print(threshold_results_log)
+
+best_threshold_log, best_row_log = get_best_threshold(
+    threshold_results_log,
+    metric="f1"
+)
+
+print("\nMejor threshold para Tuned Logistic Regression:")
+print(best_row_log)
+
+y_pred_log_best = (
+    y_prob_log_tuned >= best_threshold_log
+).astype(int)
+
+evaluate_model(
+    y_val,
+    y_pred_log_best,
+    model_name=f"Tuned Logistic Regression Threshold {best_threshold_log}"
+)
+
+plot_threshold_metrics(
+    threshold_results_log,
+    model_name="Tuned Logistic Regression"
+)
+
+
+# Random Forest tuned
+
+y_prob_rf_tuned = rf_model.predict_proba(X_val)[:, 1]
+
+threshold_results_rf = evaluate_thresholds(
+    y_val,
+    y_prob_rf_tuned
+)
+
+print("\nThreshold tuning - Tuned Random Forest\n")
+print(threshold_results_rf)
+
+best_threshold_rf, best_row_rf = get_best_threshold(
+    threshold_results_rf,
+    metric="f1"
+)
+
+print("\nMejor threshold para Tuned Random Forest:")
+print(best_row_rf)
+
+y_pred_rf_best = (
+    y_prob_rf_tuned >= best_threshold_rf
+).astype(int)
+
+evaluate_model(
+    y_val,
+    y_pred_rf_best,
+    model_name=f"Tuned Random Forest Threshold {best_threshold_rf}"
+)
+
+plot_threshold_metrics(
+    threshold_results_rf,
+    model_name="Tuned Random Forest"
+)
