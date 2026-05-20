@@ -218,3 +218,21 @@ threshold_results = evaluate_thresholds(
 print("\nThreshold tuning:\n")
 
 print(threshold_results)
+
+best_row = threshold_results.sort_values(
+    by="f1",
+    ascending=False
+).iloc[0]
+
+best_threshold = best_row["threshold"]
+
+print("\nMejor threshold segun F1:")
+print(best_row)
+
+y_pred_best = (y_prob >= best_threshold).astype(int)
+
+evaluate_model(
+    y_val,
+    y_pred_best,
+    model_name=f"Logistic Regression Threshold {best_threshold}"
+)
