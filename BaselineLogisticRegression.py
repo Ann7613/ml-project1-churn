@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.preprocessing import StandardScaler
@@ -236,3 +237,34 @@ evaluate_model(
     y_pred_best,
     model_name=f"Logistic Regression Threshold {best_threshold}"
 )
+
+plt.figure(figsize=(7, 5))
+
+plt.plot(
+    threshold_results["threshold"],
+    threshold_results["f1"],
+    marker="o",
+    label="F1-score"
+)
+
+plt.plot(
+    threshold_results["threshold"],
+    threshold_results["recall"],
+    marker="o",
+    label="Recall"
+)
+
+plt.plot(
+    threshold_results["threshold"],
+    threshold_results["precision"],
+    marker="o",
+    label="Precision"
+)
+
+plt.xlabel("Threshold")
+plt.ylabel("Score")
+plt.title("Metricas segun Threshold")
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
