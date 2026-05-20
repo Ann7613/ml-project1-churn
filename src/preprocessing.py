@@ -11,8 +11,8 @@ from sklearn.model_selection import train_test_split
 def load_and_preprocess():
 
     # cargar datasets
-    train_df = pd.read_csv("train.csv")
-    test_df = pd.read_csv("test.csv")
+    train_df = pd.read_csv("../train.csv")
+    test_df = pd.read_csv("../test.csv")
 
     # convertir TotalCharges
     train_df["TotalCharges"] = pd.to_numeric(
