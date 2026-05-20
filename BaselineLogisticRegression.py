@@ -6,6 +6,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 
 from src.evaluation import evaluate_model
+from src.threshold import evaluate_thresholds
 
 # cargar datasets
 train_df = pd.read_csv("train.csv")
@@ -202,3 +203,18 @@ evaluate_model(
 
 #print("\nConfusion Matrix:\n")
 #print(confusion_matrix(y_val, y_pred))
+
+# probabilidades del modelo
+
+y_prob = model.predict_proba(X_val)[:, 1]
+
+# evaluar distintos thresholds
+
+threshold_results = evaluate_thresholds(
+    y_val,
+    y_prob
+)
+
+print("\nThreshold tuning:\n")
+
+print(threshold_results)
